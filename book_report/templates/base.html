@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+        .nav {
+            color: #DCDCDC;
+        }
+        
+        .user-info {
+            margin-block-start: 2rem;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        @media (max-width: 1000px) {
+            .user-info {
+                display: none;
+            }
+        }
+
+        {% block style %}{% endblock %}
+    </style>
+    <title>{% block title %}Book Report{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Book Report Website</h1>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'books:book-list' %}">Books</a></li>
+                <li><a href="{% url 'reports:report-list' %}">Reports</a></li>
+                <div>
+                    {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'users:profile-detail' user.pk %}">Profile</a></li>
+                    <li>
+                        <form method="post" action="{% url 'users:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'users:login' %}">Login</a></li>
+                    <li><a href="{% url 'users:register' %}">Sign Up</a></li>
+                    {% endif %}
+                </div>
+            </ul>
+
+
+            <div class="user-info">
+                {% if request.user.is_authenticated %}
+                <p>Welcome, {{ request.user.username }}</p>
+                <div style="display: flex;">
+                    <a href="{% url 'users:profile-detail' request.user.pk %}">Profile</a>
+                    <form method="post" action="{% url 'users:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                </div>
+                {% else %}
+                <a href="{% url 'users:login' %}">Login</a>
+                <a href="{% url 'users:register' %}">Sign Up</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Book Report Website. All rights reserved.</p>
+        <p>Powered by <a href="https://developers.google.com/books/" target="_blank">Google Books API</a></p>
+    </footer>
+</body>
+</html>

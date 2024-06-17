@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Create Report{% endblock %}
+
+{% block style %}
+#id_content {
+    width: 80%;
+}
+{% endblock %}
+
+{% block content %}
+
+<h1>{% if page_title %}{{ page_title }}{% else %}Create Report{% endif %}</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Report</button>
+</form>
+
+{% endblock %}

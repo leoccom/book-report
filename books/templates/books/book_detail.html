@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div>
+    <h3>{{ book.title }}</h3>
+    <p>
+        Author: {{ book.author }}
+    </p>
+    <p>
+        Description: <br>
+        {{ book.description }}
+    </p>
+</div>
+
+<div>
+    <h4>Book reports for this book</h4>
+    <ul>
+        {% for report in reports %}
+        <li><a href="{% url 'reports:report-detail' report.pk %}">{{ report.title }}</a></li>
+        {% empty %}
+        No reports yet
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block style %}
+    .book-detail-block {
+        display: flex;
+        align-items: center;
+    }
+    .book-detail-block .div {
+        margin-left: 10px;
+        margin-bottom: 
+    }
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <h3><a href="{% url 'books:book-list' %}" class="nav">Books</a></h3>
+
+    <form method="get" action="{% url 'books:book-list' %}">
+        <input type="text" name="query" placeholder="Search for books...">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if query %}
+    <p>
+        Search results for "{{ query }}"
+    </p>
+    {% endif %}
+
+    <ul>
+        {% if books %}
+        {% for book in books %}
+        <li style="border-bottom: 1px solid #DCDCDC; margin-bottom: 10px;">
+            <div class="book-detail-block">
+                <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="Book Cover" style="margin-right: 10px;">
+                <div>
+                    <h4>{{ book.volumeInfo.title }} <a href="{{ book.volumeInfo.previewLink }}" target="_blank">(Preview)</a></h4>
+                    <p><strong>Author:</strong> {{ book.volumeInfo.authors | join:", " }}</p>
+                </div>
+            </div>
+            <p><strong>Description:</strong><br>
+                {% with description=book.volumeInfo.description %}
+                {% if description|length > 300 %}
+                {{ description | slice:":300"}}...
+                {% else %}
+                {{ description }}
+                {% endif %}
+                {% endwith %}
+            </p>
+        </li>
+        {% endfor %}
+        {% elif query %}
+        <li>No books found.</li>
+        {% endif %}
+    </ul>
+</div>
+
+{% endblock %}

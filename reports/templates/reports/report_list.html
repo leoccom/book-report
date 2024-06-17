@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Reports
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <div style="display: flex; justify-content: space-between;">
+        <h3><a href="{% url 'reports:report-list' %}" class="nav">Reports</a></h3>
+        <a href="{% url 'reports:report-create' %}" style="margin-top: 3rem; margin-block-end: 1em;">Write Report</a>
+    </div>
+    <ul>
+        {% for report in reports %}
+        <li>{{ report.book_title }} - <a href="{% url 'reports:report-detail' report.pk %}">{{ report.title }}</a> (by {{ report.user.username }})</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
