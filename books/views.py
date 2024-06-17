@@ -21,7 +21,7 @@ class BookListView(ListView):
     def get_queryset(self):
         query = self.request.GET.get("query", '')
         if query:
-            api_key = "AIzaSyAntCwlh7Qnprgc4R33KZo0Fjkyf3L_3XU"
+            api_key = ''
             url = "https://www.googleapis.com/books/v1/volumes"
             params = {
                 'q': query,
