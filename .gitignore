@@ -10,3 +10,5 @@ settings.ini
 # Ignore IDE specific files
 .vscode/
 .idea/
+
+__pycache__
