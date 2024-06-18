@@ -31,6 +31,7 @@ class BookListView(ListView):
             }
             response = requests.get(url, params=params)
             if response.status_code == 200:
+                print(response.json().get("items", [])[0])
                 return response.json().get("items", [])
         return []
     

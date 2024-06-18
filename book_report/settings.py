@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "books.apps.BooksConfig",
     "comments.apps.CommentsConfig",
+    "channels",
     "reports.apps.ReportsConfig",
     "users.apps.UsersConfig",
     'django.contrib.admin',
@@ -72,8 +73,14 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = "book_report.asgi.application"
 WSGI_APPLICATION = 'book_report.wsgi.application'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

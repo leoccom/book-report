@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DetailView
 from django.contrib.auth.views import LoginView, LogoutView
@@ -28,6 +28,9 @@ class UserProfileDetailView(LoginRequiredMixin, DetailView):
     template_name = "users/profile_detail.html"
     context_object_name = "user"
 
+    def get_object(self):
+        return get_object_or_404(User, username=self.kwargs["username"])
+    
     # def get_object(self, queryset=None):
     #     user_profile = super().get_object(queryset=queryset)
     #     if self.request.user == user_profile:
@@ -39,7 +42,7 @@ class UserProfileUpdateView(UpdateView):
     model = User
     template_name = "users/profile_update.html"
     form_class = UserUpdateForm
-    success_url = reverse_lazy("users:profile")
+    success_url = reverse_lazy("users:profile-detail")
 
     def get_object(self):
         return self.request.user

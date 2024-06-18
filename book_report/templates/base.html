@@ -38,20 +38,6 @@
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'books:book-list' %}">Books</a></li>
                 <li><a href="{% url 'reports:report-list' %}">Reports</a></li>
-                <div>
-                    {% if request.user.is_authenticated %}
-                    <li><a href="{% url 'users:profile-detail' user.pk %}">Profile</a></li>
-                    <li>
-                        <form method="post" action="{% url 'users:logout' %}">
-                            {% csrf_token %}
-                            <button type="submit">Logout</button>
-                        </form>
-                    </li>
-                    {% else %}
-                    <li><a href="{% url 'users:login' %}">Login</a></li>
-                    <li><a href="{% url 'users:register' %}">Sign Up</a></li>
-                    {% endif %}
-                </div>
             </ul>
 
 
@@ -59,7 +45,7 @@
                 {% if request.user.is_authenticated %}
                 <p>Welcome, {{ request.user.username }}</p>
                 <div style="display: flex;">
-                    <a href="{% url 'users:profile-detail' request.user.pk %}">Profile</a>
+                    <a href="{% url 'users:profile-detail' request.user.username %}">Profile</a>
                     <form method="post" action="{% url 'users:logout' %}">
                         {% csrf_token %}
                         <button type="submit">Logout</button>
