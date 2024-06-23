@@ -10,7 +10,7 @@ class Report(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    user_likes = models.ManyToManyField(User, related_name="liked_reports", blank=True, null=True)
+    user_likes = models.ManyToManyField(User, related_name="liked_reports", blank=True)
 
     def __str__(self):
         return f"- {self.title}"
