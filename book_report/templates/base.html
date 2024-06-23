@@ -11,6 +11,12 @@
             color: #FFB300;
         }
 
+        button {
+            border: #FFB300;
+            background-color: #FFB300;
+            color: #212121;
+        }
+
         body {
             color: #DCDCDC;
             background-color: #212121;
@@ -44,6 +50,76 @@
             }
         }
 
+        #menu-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+        }
+        @media (min-width: 900px) {
+            #menu-icon {
+                display: none;
+            }
+        }
+
+        #auth-links {
+            position: fixed;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #2B2B2B 50%, rgba(0, 0, 0, 0.5) 50%);
+            transition: left 0.5s, opacity 0.75s ease-in-out;
+            z-index: 1000;
+            /* display: flex; */
+            opacity: 0;
+        }
+        #auth-links.active {
+            left: 0;
+            opacity: 1;
+        }
+        #auth-links .transparent-half {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            cursor: pointer;
+            background: none;
+            z-index: 1001;
+        }
+        #auth-links a {
+            text-decoration: none;
+            margin: 0px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #auth-links a:hover {
+            background-color: #505050;
+        }
+        #auth-links hr {
+            background: #DCDCDC;
+            width: 100%;
+            margin: 0;
+        }
+        #auth-links button {
+            border: none;
+            background-color: #2B2B2B;
+            width: 100%;
+            color: #DCDCDC;
+            height: 50px;
+            margin: 0;
+        }
+        #auth-links button:hover {
+            background-color: #505050;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
         {% block style %}{% endblock %}
     </style>
     <title>{% block title %}Book Report{% endblock %}</title>
@@ -51,6 +127,35 @@
 <body>
     <header>
         <nav>
+            <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#dcdcdc"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+
+            {% if request.user.is_authenticated %}
+            <div id="auth-links">
+                <div style="width: 50%; display: flex; flex-direction: column;">
+                    <p>Welcome, {{ request.user.username }}</p>
+                    <hr>
+                    <a href="{% url 'users:profile-detail' request.user.username %}">Profile</a>
+                    <hr>
+                    <form method="post" action="{% url 'users:logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                    <hr>
+                </div>
+                <div class="transparent-half"></div>
+            </div>
+            {% else %}
+            <div id="auth-links">
+                <div style="width: 50%; display: flex; flex-direction: column;">
+                    <a href="{% url 'users:login' %}">Login</a>
+                    <hr>
+                    <a href="{% url 'users:register' %}"">Sign Up</a>
+                    <hr>
+                </div>
+                <div class="transparent-half"></div>
+            </div>
+            {% endif %}
+
             <h1>Book Report Website</h1>
             <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
@@ -86,5 +191,21 @@
         <p>&copy; 2024 Book Report Website. All rights reserved.</p>
         <p>Powered by <a href="https://developers.google.com/books/" target="_blank">Google Books API</a></p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById("menu-icon").addEventListener("click", function() {
+                var authLinks = document.getElementById("auth-links");
+                authLinks.classList.toggle("active");
+                authLinks.style.left = '0';
+            });
+
+            document.querySelector("#auth-links .transparent-half").addEventListener("click", function() {
+                var authLinks = document.getElementById("auth-links");
+                authLinks.classList.remove("active");
+                authLinks.style.left = '-100%';
+            })
+        });
+    </script>
 </body>
 </html>
