@@ -38,11 +38,13 @@ class UserProfileDetailView(LoginRequiredMixin, DetailView):
     #     else:
     #         raise Http404("You are not authorized to view this page.")
 
-class UserProfileUpdateView(UpdateView):
+class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     template_name = "users/profile_update.html"
     form_class = UserUpdateForm
-    success_url = reverse_lazy("users:profile-detail")
 
     def get_object(self):
         return self.request.user
+    
+    def get_success_url(self):
+        return reverse_lazy("users:profile-detail", kwargs={"username": self.request.user.username})
