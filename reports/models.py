@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from books.models import Book
 
 # Create your models here.
 class Report(models.Model):
@@ -11,8 +10,11 @@ class Report(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    likes = models.PositiveIntegerField(default=0)
-    comment_count = models.PositiveIntegerField(default=0)
+    user_likes = models.ManyToManyField(User, related_name="liked_reports", blank=True)
 
     def __str__(self):
         return f"- {self.title}"
+    
+    @property
+    def comment_count(self):
+        return self.comments.count()

@@ -1,6 +1,7 @@
-from django.shortcuts import redirect, render
+from re import template
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from reports.forms import ReportForm
@@ -85,3 +86,12 @@ class ReportUpdateView(LoginRequiredMixin, UpdateView):
         if not (self.request.user.is_superuser) and (report.user != self.request.user):
             raise PermissionDenied("You do not have permission to edit this report.")
         return report
+
+class ReportLikeView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        report = get_object_or_404(Report, pk=kwargs["pk"])
+        if request.user in report.user_likes.all():
+            report.user_likes.remove(request.user)
+        else:
+            report.user_likes.add(request.user)
+        return redirect("reports:report-detail", args=[report.pk])

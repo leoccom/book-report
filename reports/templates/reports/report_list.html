@@ -4,6 +4,24 @@
 Reports
 {% endblock %}
 
+{% block style %}
+    .report-list-item {
+        padding-bottom: 5px;
+        border-bottom: 0.5px;
+        border-color: black;
+        color: #DCDCDC;
+        border-radius: 16px;
+        margin: 0.5rem 0;
+    }
+    .report-list-item:hover {
+        background-color: #2B2B2B;
+    }
+    .report-list-item .user {
+        color: gray;
+        font-size: 1rem;
+    }
+{% endblock %}
+
 {% block content %}
 
 <div>
@@ -11,11 +29,19 @@ Reports
         <h3><a href="{% url 'reports:report-list' %}" class="nav">Reports</a></h3>
         <a href="{% url 'reports:report-create' %}" style="margin-top: 3rem; margin-block-end: 1em;">Write Report</a>
     </div>
-    <ul>
+    <div>
+        <hr class="border-line-bottom">
         {% for report in reports %}
-        <li>{{ report.book_title }} - <a href="{% url 'reports:report-detail' report.pk %}">{{ report.title }}</a> (by {{ report.user.username }})</li>
+        <a href="{% url 'reports:report-detail' report.pk %}">
+            <p class="report-list-item">
+                <strong>{{ report.book_title }}</strong><br>
+                {{ report.title }}<br>
+                <span class="user">{{ report.user.username }}</span>
+            </p>
+        </a>
+        <hr>
         {% endfor %}
-    </ul>
+    </div>
 </div>
 
 {% endblock %}

@@ -6,8 +6,26 @@
 
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
     <style>
-        a {
+        a, a:visited {
             text-decoration: none;
+            color: #FFB300;
+        }
+
+        body {
+            color: #DCDCDC;
+            background-color: #212121;
+        }
+        body>header {
+            background-color: #2B2B2B;
+        }
+
+        .border-line-bottom {
+            border-bottom: 1px;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .border-line-top {
+            border-top: 1px;
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
         .nav {
@@ -20,7 +38,7 @@
             top: 20px;
             right: 20px;
         }
-        @media (max-width: 1000px) {
+        @media (max-width: 900px) {
             .user-info {
                 display: none;
             }
