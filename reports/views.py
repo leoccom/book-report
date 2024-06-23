@@ -1,4 +1,5 @@
 from re import template
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, View
@@ -94,4 +95,4 @@ class ReportLikeView(LoginRequiredMixin, View):
             report.user_likes.remove(request.user)
         else:
             report.user_likes.add(request.user)
-        return redirect("reports:report-detail", args=[report.pk])
+        return HttpResponseRedirect(reverse("reports:report-detail", kwargs={"pk": report.pk}))

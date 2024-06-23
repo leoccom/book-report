@@ -20,6 +20,7 @@
         background-color: #212121;
         width: 40px;
         height: 40px;
+        margin-bottom: 0rem;
     }
     button.like_button:hover {
         border: 1px solid rgb(232, 234, 237);
@@ -45,10 +46,13 @@ Report Detail
 
     <hr>
 
-    <form method="post" action="{% url 'reports:report-like' report.pk %}">
-        {% csrf_token %}
-        <button type="submit" class="like_button"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M720-144H264v-480l288-288 32 22q17 12 26 30.5t5 38.5l-1 5-38 192h264q30 0 51 21t21 51v57q0 8-1.5 14.5T906-467L786.93-187.8Q778-168 760-156t-40 12Zm-384-72h384l120-279v-57H488l49-243-201 201v378Zm0-378v378-378Zm-72-30v72H120v336h144v72H48v-480h216Z"/></svg></button>
-    </form>
+    <div style="display: flex; align-items: center;">
+        <form method="post" action="{% url 'reports:report-like' report.pk %}" style="display: flex; align-items: center;">
+            {% csrf_token %}
+            <button type="submit" class="like_button">{% if request.user in report.user_likes.all %}<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#B87E9F"><path d="M720-144H264v-480l288-288 32 22q17 12 26 30.5t5 38.5l-1 5-38 192h264q30 0 51 21t21 51v57q0 8-1.5 14.5T906-467L786.93-187.8Q778-168 760-156t-40 12Zm-384-72h384l120-279v-57H488l49-243-201 201v378Zm0-378v378-378Zm-72-30v72H120v336h144v72H48v-480h216Z"/></svg>{% else %}<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#666666"><path d="M720-144H264v-480l288-288 32 22q17 12 26 30.5t5 38.5l-1 5-38 192h264q30 0 51 21t21 51v57q0 8-1.5 14.5T906-467L786.93-187.8Q778-168 760-156t-40 12Zm-384-72h384l120-279v-57H488l49-243-201 201v378Zm0-378v378-378Zm-72-30v72H120v336h144v72H48v-480h216Z"/></svg>{% endif %}</button>
+        </form>
+        <span style="margin-left: 5px;">{{ report.user_likes.count }} like{{ report.user_likes.count|pluralize }}</span>
+    </div>
 
     <div>
         <h4 style="margin-block-start: 1em;">Comment</h4>
