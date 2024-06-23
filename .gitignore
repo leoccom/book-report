@@ -14,3 +14,5 @@ settings.ini
 __pycache__
 
 staticfiles/
+
+db.sqlite3
