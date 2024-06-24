@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -123,6 +124,7 @@
         {% block style %}{% endblock %}
     </style>
     <title>{% block title %}Book Report{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'book_report/favicon_io/android-chrome-512x512.png' %}">
 </head>
 <body>
     <header>
@@ -206,6 +208,8 @@
                 authLinks.style.left = '-100%';
             })
         });
+
+        {% block script %}{% endblock %}
     </script>
 </body>
 </html>
