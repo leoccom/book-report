@@ -19,6 +19,7 @@ Reports
     .report-list-item .user {
         color: gray;
         font-size: 1rem;
+        align-items: center;
     }
 {% endblock %}
 
@@ -36,7 +37,15 @@ Reports
             <p class="report-list-item">
                 <strong>{{ report.book_title }}</strong><br>
                 {{ report.title }}<br>
-                <span class="user">{{ report.user.username }}</span>
+                <span class="user">
+                    {% if report.user_likes.count > 0 %}
+                        {{ report.user_likes.count }} <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#B87E9F" style="vertical-align: middle;"><path d="M720-144H264v-480l288-288 32 22q17 12 26 30.5t5 38.5l-1 5-38 192h264q30 0 51 21t21 51v57q0 8-1.5 14.5T906-467L786.93-187.8Q778-168 760-156t-40 12Zm-384-72h384l120-279v-57H488l49-243-201 201v378Zm0-378v378-378Zm-72-30v72H120v336h144v72H48v-480h216Z"/></svg> | 
+                    {% endif %}
+                    {% if report.comments.count > 0 %}
+                        {{ report.comments.count }} <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#7CA7D8" style="vertical-align: middle;"><path d="M96-96v-696q0-29.7 21.15-50.85Q138.3-864 168-864h624q29.7 0 50.85 21.15Q864-821.7 864-792v480q0 29.7-21.15 50.85Q821.7-240 792-240H240L96-96Zm114-216h582v-480H168v522l42-42Zm-42 0v-480 480Z"/></svg> | 
+                    {% endif %}
+                    {{ report.user.username }}
+                </span>
             </p>
         </a>
         <hr>

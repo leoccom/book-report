@@ -17,11 +17,17 @@ class UserLoginView(LoginView):
     template_name = "users/login.html"
 
     def get_success_url(self):
+        next_url = self.request.GET.get("next")
+        if next_url:
+            return next_url
         return reverse_lazy("home")
     
 class UserLogoutView(LogoutView):
     template_name = "users/logout.html"
     # next_page = reverse_lazy("home")
+
+    def get_success_url(self):
+        return reverse_lazy("home")
 
 class UserProfileDetailView(LoginRequiredMixin, DetailView):
     model = User
