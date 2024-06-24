@@ -144,4 +144,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = "/users/login/" # Where to redirect if user is not logged in
+
 # LOGIN_REDIRECT_URL = "/users/profile/" # Where to redirect after successful login
