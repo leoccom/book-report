@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -22,14 +23,20 @@
             color: #DCDCDC;
             background-color: #212121;
         }
+
         body>header {
             background-color: #2B2B2B;
+        }
+
+        .title-box {
+            border-bottom: 1px solid #DCDCDC;
         }
 
         .border-line-bottom {
             border-bottom: 1px;
             border-color: rgba(255, 255, 255, 0.1);
         }
+
         .border-line-top {
             border-top: 1px;
             border-color: rgba(255, 255, 255, 0.1);
@@ -38,17 +45,26 @@
         .nav {
             color: #DCDCDC;
         }
-        
+
         .user-info {
             margin-block-start: 2rem;
             position: absolute;
             top: 20px;
             right: 20px;
         }
+
         @media (max-width: 900px) {
             .user-info {
                 display: none;
             }
+        }
+
+        a.book-title {
+            color: #B6F8FF;
+        }
+        a.book-title:hover {
+            text-decoration: underline;
+            color: #28EBFF;
         }
 
         #menu-icon {
@@ -57,6 +73,7 @@
             left: 20px;
             cursor: pointer;
         }
+
         @media (min-width: 900px) {
             #menu-icon {
                 display: none;
@@ -75,10 +92,12 @@
             /* display: flex; */
             opacity: 0;
         }
+
         #auth-links.active {
             left: 0;
             opacity: 1;
         }
+
         #auth-links .transparent-half {
             position: absolute;
             right: 0;
@@ -89,6 +108,7 @@
             background: none;
             z-index: 1001;
         }
+
         #auth-links a {
             text-decoration: none;
             margin: 0px;
@@ -97,14 +117,17 @@
             justify-content: center;
             align-items: center;
         }
+
         #auth-links a:hover {
             background-color: #505050;
         }
+
         #auth-links hr {
             background: #DCDCDC;
             width: 100%;
             margin: 0;
         }
+
         #auth-links button {
             border: none;
             background-color: #2B2B2B;
@@ -113,6 +136,7 @@
             height: 50px;
             margin: 0;
         }
+
         #auth-links button:hover {
             background-color: #505050;
         }
@@ -126,10 +150,14 @@
     <title>{% block title %}Book Report{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'book_report/favicon_io/android-chrome-512x512.png' %}">
 </head>
+
 <body>
     <header>
         <nav>
-            <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#dcdcdc"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+            <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#dcdcdc">
+                <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+            </svg>
 
             {% if request.user.is_authenticated %}
             <div id="auth-links">
@@ -154,15 +182,17 @@
                     <a href="{% url 'users:register' %}"">Sign Up</a>
                     <hr>
                 </div>
-                <div class="transparent-half"></div>
+                <div class=" transparent-half">
+                </div>
             </div>
             {% endif %}
 
             <h1>Book Report Website</h1>
             <ul>
-                <li><a href="{% url 'home' %}" style="color: #DCDCDC;">Home</a></li>
-                <li><a href="{% url 'books:book-list' %}" style="color: #DCDCDC;">Books</a></li>
-                <li><a href="{% url 'reports:report-list' %}" style="color: #DCDCDC;">Reports</a></li>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'books:book-list' %}">Books</a></li>
+                <li><a href="{% url 'library:library-list' %}">Library</a></li>
+                <li><a href="{% url 'reports:report-list' %}">Reports</a></li>
             </ul>
 
 
@@ -183,7 +213,7 @@
             </div>
         </nav>
     </header>
-    
+
     <main>
         {% block content %}
         {% endblock %}
@@ -196,20 +226,21 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById("menu-icon").addEventListener("click", function() {
+            document.getElementById("menu-icon").addEventListener("click", function () {
                 var authLinks = document.getElementById("auth-links");
                 authLinks.classList.toggle("active");
                 authLinks.style.left = '0';
             });
 
-            document.querySelector("#auth-links .transparent-half").addEventListener("click", function() {
+            document.querySelector("#auth-links .transparent-half").addEventListener("click", function () {
                 var authLinks = document.getElementById("auth-links");
                 authLinks.classList.remove("active");
                 authLinks.style.left = '-100%';
             })
         });
 
-        {% block script %}{% endblock %}
+        {% block script %} {% endblock %}
     </script>
 </body>
+
 </html>

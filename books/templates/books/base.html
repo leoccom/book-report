@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block style %}
+    .book-detail-block {
+        display: flex;
+        align-items: center;
+    }
+    .book-detail-block .div {
+        margin-left: 10px;
+        margin-bottom: 
+    }
+
+    .top {
+        margin-top: 1rem;
+    }
+{% endblock %}
+
+{% block content %}
+
+<div class="title-box" style="display: flex; justify-content: space-between;">
+    <h3><a href="{% url 'books:book-list' %}" class="nav">Books</a></h3>
+
+    <form method="get" action="{% url 'books:book-search' %}" style="margin-top: 3rem;">
+        <input type="text" name="query" placeholder="Search for books...">
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+{% endblock %}

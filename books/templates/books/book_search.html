@@ -1,0 +1,41 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+{{ block.super }}
+    {% if query %}
+    <p>
+        Search results for "{{ query }}"
+    </p>
+    {% else %}
+    <p>
+        Start searching for books here.
+    </p>
+    {% endif %}
+
+    <ul>
+        {% if books %}
+        {% for book in books %}
+        <li style="border-bottom: 1px solid #DCDCDC; margin-bottom: 10px;">
+            <div class="book-detail-block">
+                <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="Book Cover" style="margin-right: 10px;">
+                <div>
+                    <h4>{{ book.volumeInfo.title }} <a href="{{ book.volumeInfo.previewLink }}" target="_blank">(Preview)</a></h4>
+                    <p><strong>Author:</strong> {{ book.volumeInfo.authors | join:", " }}</p>
+                </div>
+            </div>
+            <p><strong>Description:</strong><br>
+                {% with description=book.volumeInfo.description %}
+                {% if description|length > 300 %}
+                {{ description | slice:":300"}}...
+                {% else %}
+                {{ description }}
+                {% endif %}
+                {% endwith %}
+            </p>
+        </li>
+        {% endfor %}
+        {% elif query %}
+        <li>No books found.</li>
+        {% endif %}
+    </ul>
+{% endblock %}

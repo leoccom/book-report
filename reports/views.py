@@ -2,13 +2,14 @@ from re import template
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, View
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, View, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from reports.forms import ReportForm
 from django.core.exceptions import PermissionDenied
 from django.views.generic.edit import FormMixin
 
+from books.models import Book
 from .models import Report
 from comments.models import Comment
 from comments.forms import CommentForm
@@ -53,13 +54,19 @@ class ReportDetailView(FormMixin, DetailView):
 class ReportCreateView(LoginRequiredMixin ,CreateView):
     model = Report
     template_name = "reports/report_form.html"
-    fields = ["book_title", "book_author", "title", "content"]
+    form_class = ReportForm
     login_url = reverse_lazy("users:login")
     success_url = reverse_lazy("reports:report-list")
 
     def form_valid(self, form):
+        book_title = form.cleaned_data.get("book_title")
+        book_author = form.cleaned_data.get("book_author")
+
+        book, created = Book.objects.get_or_create(title=book_title, author=book_author)
+
         report = form.save(commit=False)
         report.user = self.request.user
+        report.book = book
         report.save()
         return redirect("reports:report-detail", pk=report.pk)
 
@@ -76,7 +83,7 @@ class ReportUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["page_title"] = "Update Report"
+        context["page_title"] = "Edit Report"
         return context
     
     def get_success_url(self):
@@ -96,3 +103,13 @@ class ReportLikeView(LoginRequiredMixin, View):
         else:
             report.user_likes.add(request.user)
         return HttpResponseRedirect(reverse("reports:report-detail", kwargs={"pk": report.pk}))
+
+class ReportDeleteView(LoginRequiredMixin, DeleteView):
+    model = Report
+    success_url = reverse_lazy("reports:report-list")
+
+    def get_object(self, queryset=None):
+        report = super().get_object(queryset)
+        if not (self.request.user.is_superuser) and (report.user != self.request.user):
+            raise PermissionDenied("You do not have permission to delete this report.")
+        return report

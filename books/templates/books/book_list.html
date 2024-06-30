@@ -1,62 +1,42 @@
-{% extends "base.html" %}
-
-{% block style %}
-    .book-detail-block {
-        display: flex;
-        align-items: center;
-    }
-    .book-detail-block .div {
-        margin-left: 10px;
-        margin-bottom: 
-    }
-{% endblock %}
+{% extends "books/base.html" %}
 
 {% block content %}
-
+{{ block.super }}
 <div>
-    <h3><a href="{% url 'books:book-list' %}" class="nav">Books</a></h3>
-
-    <form method="get" action="{% url 'books:book-list' %}">
-        <input type="text" name="query" placeholder="Search for books...">
-        <button type="submit">Search</button>
-    </form>
-
-    {% if query %}
-    <p>
-        Search results for "{{ query }}"
-    </p>
-    {% else %}
-    <p>
-        Start searching for books here.
-    </p>
-    {% endif %}
-
+    <h3>Favorite Books</h3>
+    {% if favorite_books %}
     <ul>
-        {% if books %}
-        {% for book in books %}
-        <li style="border-bottom: 1px solid #DCDCDC; margin-bottom: 10px;">
+        {% for book in favorite_books %}
+        <li>
             <div class="book-detail-block">
-                <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="Book Cover" style="margin-right: 10px;">
                 <div>
-                    <h4>{{ book.volumeInfo.title }} <a href="{{ book.volumeInfo.previewLink }}" target="_blank">(Preview)</a></h4>
-                    <p><strong>Author:</strong> {{ book.volumeInfo.authors | join:", " }}</p>
+                    <a href="{% url 'books:book-detail' book.pk %}" class="book-title">{{ book.title}}</a> - {{ book.author }}
                 </div>
             </div>
-            <p><strong>Description:</strong><br>
-                {% with description=book.volumeInfo.description %}
-                {% if description|length > 300 %}
-                {{ description | slice:":300"}}...
-                {% else %}
-                {{ description }}
-                {% endif %}
-                {% endwith %}
-            </p>
         </li>
         {% endfor %}
-        {% elif query %}
-        <li>No books found.</li>
-        {% endif %}
     </ul>
+    {% else %}
+    <p>No favorite books yet.</p>
+    {% endif %}
 </div>
 
+<div>
+    <h3>Read-Later</h3>
+    {% if read_later_books %}
+    <ul>
+        {% for book in read_later_books %}
+        <li>
+            <div class="book-detail-block">
+                <div>
+                    <a href="{% url 'books:book-detail' book.pk %}" class="book-title">{{ book.title}}</a> - {{ book.author }}
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No books in read-later list.</p>
+    {% endif %}
+</div>
 {% endblock %}

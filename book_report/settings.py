@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "books.apps.BooksConfig",
     "comments.apps.CommentsConfig",
     "channels",
+    "library.apps.LibraryConfig",
     "reports.apps.ReportsConfig",
     "users.apps.UsersConfig",
     'django.contrib.admin',
